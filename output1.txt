@@ -1,0 +1,72 @@
+"// Quadratic Equation demo"
+"// "
+"// Functions are:"
+"// "
+"// add"
+"// negate"
+"// mult"
+"// mult_inv"
+"// divide"
+"// convert"
+"// root"
+"// "
+"// To use root use:"
+"// "
+"// 2 (number)"
+"// 1.41 (guess)"
+"// root 2 (square root)"
+"// show"
+"// Begin user-modifiable arguments:"
+"// set more_accuracy 20"
+"// Example: Solve x^2 + 3x - 4 = 0"
+"// This might need to be modified:"
+ "// the guess"
+"// store a,b,c:"
+"equals"
+1e0
+{
+  {1},
+  0,
+  100,
+  10
+}
+"equals"
+3e0
+{
+  {3},
+  0,
+  100,
+  10
+}
+"equals"
+-4e0
+{
+  {-4},
+  0,
+  100,
+  10
+}
+"// Every quadratic equation has two answers:"
+"// Answers for 'x' are {-4, 1}"
+"// End user-modifiable arguments."
+"// Begin Script code in Reverse Polish Notation (RPN):"
+ "// negate"
+"equals"
+1e0
+{
+  {1},
+  0,
+  100,
+  10
+}
+"equals"
+-4e0
+{
+  {-4},
+  0,
+  100,
+  10
+}
+"// Two answers: answer1 and answer2"
+"// End Script code."
+"complete"

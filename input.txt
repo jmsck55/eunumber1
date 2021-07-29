@@ -1,0 +1,28 @@
+set more_accuracy 40
+5e100
+get
+show
+1
+"if true"
+    0
+    "if true"
+        {{1},0,100,10}
+    "else"
+        1
+        "if true"
+            "5e200"
+        "else"
+            {{2},0,100,10}
+        "end if"
+    "end if"
+"else"
+    0
+    "if true"
+        {{3},0,100,10}
+    "else"
+        {{4},0,100,10}
+    "end if"
+"end if"
+"get"
+"show"
+

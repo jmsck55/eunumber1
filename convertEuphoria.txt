@@ -1,0 +1,59 @@
+ConvertEuphoria in current directory
+
+Program will Capitalize all Euphoria: types, functions, and procedures
+With *.e and *.ex file extensions,
+In directory: C:\Users\Owner\Downloads\eunumber-master
+Replace all Euphoria identifiers with Uppercase?
+Ignoring variables less than three (3) characters, and: func for is cr r 
+
+Enter one (1) to continue, or zero (0) to exit: 
+my.e...
+Success!
+mycomplex.e...complex complexAdd complexDivide complexMult complexMultInv complexNegate complexQuadraticEquation complexSqrt complexSubtract negateImag newComplex 
+Success!
+myeunumber.e...absoluteValue add addExp adjustRound borrow carry carryRadixOnly ceil compareExp convertExp convertRadix divideExp eun eunAdd eunCompare eunConvert eunDivide eunFracPart eunIntPart eunMult eunMultInv eunNegate eunReverse eunRoundSig eunRoundToInt eunSubtract expToAtom getGuess getMoreAccuracy getRound getVersion intToDigits isIntegerOdd mult multExp multInvExp negate newEun positiveInteger protoMultInvExp rangeEqual round roundTowardsZero setMoreAccuracy setRound subtract sum trimLeadingZeros trimTrailingZeros 
+Success!
+myeuroots.e...condition1Thru_5 findRootExp func1Exp func2Exp mycompareExp 
+Success!
+mymath.e...arcsinExp arctanExp arctanExp cosExp eunArcsin eunArctan eunCos eunExp eunExp1 eunExpFast eunExpWhole eunLog eunSin expExp expExp1 expExpFast exponentiation for is isPositiveOdd logExp myarctan myfactorial remainder2Exp sinExp 
+Success!
+nthroot.e...eunNthRoot eunSqrt eunSquareRoot intPowerExp nthRoot nthRootExp nthRootProtoExp 
+Success!
+numio.e...stringToNumberExp toAtom toEun toString 
+Success!
+quadraticequation.e...eunQuadraticEquation 
+Success!
+rmyeunumber.e...cr for r rRangeEqual rRemainder2Exp radd raddExp radjustRound rarcsinExp rarctanExp rborrow rcarry rcarryRadixOnly rcompareExp rcomplex rcomplexAdd rcomplexDivide rcomplexMult rcomplexMultInv rcomplexNegate rcomplexQuadraticEquation rcomplexSqrt rcomplexSubtract rconvertExp rconvertRadix rcosExp rdivideExp reun reunAdd reunArcsin reunArctan reunCompare reunConvert reunCos reunDivide reunExp reunExpWhole reunFracPart reunIntPart reunLog reunMult reunMultInv reunNegate reunNthRoot reunQuadraticEquation reunRoundSig reunRoundToInt reunSin reunSqrt reunSquareRoot reunSubtract rexpExp rexpExpFast rexpToAtom rfindRootExp rgetDelta rgetGuess rintPowerExp rintToDigits rlogExp rmult rmultExp rmultInvExp rmycompareExp rnegateImag rnewComplex rnthRootExp rnthRootProtoExp rprotoMultInvExp rsetDelta rsinExp rstringToNumberExp rsubtract rsum rtoAtom rtoEun rtoString rtrimLeadingZeros rtrimTrailingZeros 
+Success!
+my.e...
+Success!
+mycomplex.e...
+Success!
+myeunumber.e...
+Success!
+myeuroots.e...myCompareExp 
+Success!
+mymath.e...for is 
+Success!
+nthroot.e...
+Success!
+numio.e...
+Success!
+quadraticequation.e...
+Success!
+rmyeunumber.e...cr for r rAdd rAddExp rAdjustRound rArcSinExp rArctanExp rBorrow rCarry rCarryRadixOnly rCompareExp rComplex rComplexAdd rComplexDivide rComplexMult rComplexMultInv rComplexNegate rComplexQuadraticEquation rComplexSqrt rComplexSubtract rConvertExp rConvertRadix rCosExp rDivideExp rEun rEunAdd rEunArcsin rEunArctan rEunCompare rEunConvert rEunCos rEunDivide rEunExp rEunExpWhole rEunFracPart rEunIntPart rEunLog rEunMult rEunMultInv rEunNegate rEunNthRoot rEunQuadraticEquation rEunRoundSig rEunRoundToInt rEunSin rEunSqrt rEunSquareRoot rEunSubtract rExpExp rExpExpFast rExpToAtom rFindRootExp rGetGuess rIntPowerExp rIntToDigits rLogExp rMult rMultExp rMultInvExp rNegateImag rNewComplex rNthRootExp rNthRootProtoExp rProtoMultInvExp rmyCompareExp 
+Success!
+best.ex...calculateMoreAccuracy test1 test2 
+Success!
+calc.ex...clearPrompt getNew getVars memoryFunctions operations view 
+Success!
+calculatePi.ex...
+Success!
+doFile.ex...getNextValue getNum getNums myget 
+Success!
+main.ex...
+Success!
+236 global or public identifiers found
+absoluteValue add addExp adjustRound arcsinExp arctanExp arctanExp borrow carry carryRadixOnly ceil compareExp complex complexAdd complexDivide complexMult complexMultInv complexNegate complexQuadraticEquation complexSqrt complexSubtract convertExp convertRadix cosExp cr cr divideExp eun eunAdd eunArcsin eunArctan eunCompare eunConvert eunCos eunDivide eunExp eunExp1 eunExpFast eunExpWhole eunFracPart eunIntPart eunLog eunMult eunMultInv eunNegate eunNthRoot eunReverse eunRoundSig eunRoundToInt eunSin eunSqrt eunSquareRoot eunSubtract expExp expExp1 expExpFast expToAtom exponentiation findRootExp getGuess getMoreAccuracy getRound getVersion intPowerExp intToDigits isIntegerOdd isPositiveOdd logExp mult multExp multInvExp mycompareExp negate negateImag newComplex newEun nthRootExp nthRootProtoExp positiveInteger protoMultInvExp r r rAdd rAddExp rAdjustRound rArcSinExp rArctanExp rBorrow rCarry rCarryRadixOnly rCompareExp rComplex rComplexAdd rComplexDivide rComplexMult rComplexMultInv rComplexNegate rComplexQuadraticEquation rComplexSqrt rComplexSubtract rConvertExp rConvertRadix rCosExp rDivideExp rEun rEunAdd rEunArcsin rEunArctan rEunCompare rEunConvert rEunCos rEunDivide rEunExp rEunExpWhole rEunFracPart rEunIntPart rEunLog rEunMult rEunMultInv rEunNegate rEunNthRoot rEunQuadraticEquation rEunRoundSig rEunRoundToInt rEunSin rEunSqrt rEunSquareRoot rEunSubtract rExpExp rExpExpFast rExpToAtom rFindRootExp rGetGuess rIntPowerExp rIntToDigits rLogExp rMult rMultExp rMultInvExp rNegateImag rNewComplex rNthRootExp rNthRootProtoExp rProtoMultInvExp rRangeEqual rRemainder2Exp radd raddExp radjustRound rangeEqual rarcsinExp rarctanExp rborrow rcarry rcarryRadixOnly rcompareExp rcomplex rcomplexAdd rcomplexDivide rcomplexMult rcomplexMultInv rcomplexNegate rcomplexQuadraticEquation rcomplexSqrt rcomplexSubtract rconvertExp rconvertRadix rcosExp rdivideExp remainder2Exp reun reunAdd reunArcsin reunArctan reunCompare reunConvert reunCos reunDivide reunExp reunExpWhole reunFracPart reunIntPart reunLog reunMult reunMultInv reunNegate reunNthRoot reunQuadraticEquation reunRoundSig reunRoundToInt reunSin reunSqrt reunSquareRoot reunSubtract rexpExp rexpExpFast rexpToAtom rfindRootExp rgetDelta rgetGuess rintPowerExp rintToDigits rlogExp rmult rmultExp rmultInvExp rmyCompareExp rmycompareExp rnegateImag rnewComplex rnthRootExp rnthRootProtoExp round roundTowardsZero rprotoMultInvExp rsetDelta rsinExp rstringToNumberExp rsubtract rsum rtoAtom rtoEun rtoString rtrimLeadingZeros rtrimTrailingZeros setMoreAccuracy setRound sinExp stringToNumberExp subtract sum toAtom toEun toString trimLeadingZeros trimTrailingZeros 
+All replaced.
+done.

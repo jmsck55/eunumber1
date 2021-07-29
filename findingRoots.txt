@@ -1,0 +1,95 @@
+Copyright (c) 2016-2021 James Cook
+
+What can this be used to find?
+Zeros of the equation(s)
+Roots of the equation(s)
+
+f(x) = g(x)
+0 = f(x) - g(x)
+0 = g(x) - f(x)
+h(x) = f(x) - g(x)
+then use h(x) for the function to be calculated.
+
+Example:
+y=cos(x)
+function func1(object x)
+	return cos(x)
+end function
+integer myfunc1 = routine_id("func1")
+atom a, b
+a = -1
+b = 2
+? root_exp(myfunc1, a, b)
+-- Note: answer should be: 1.5707963267948966192313216916398
+
+
+
+https://en.wikipedia.org/wiki/Brent%27s_method
+
+
+function root_exp()
+-- finds the zeros of the equation.
+	return {}
+end function
+
+
+BEGIN Math Recipe:
+
+Input a, b, and a pointer to a subroutine for "f"
+calculate f(a)
+calculate f(b)
+if f(a)*f(b) >= 0 then "error-exit" end if
+if |f(a)| < |f(b)| then swap(a,b) end if
+c := a
+
+set mflag
+
+repeat until f(b or s) = 0 or |b - a| is small enough (convergence)
+	if f(a) != f(c) and f(b) != f(c) then
+		calculate "s" (inverse quadratic interpolation)
+[
+     a * f(b) * f(c)           b * f(a) * f(c)           c * f(a) * f(b)
+s := ----------------------- + ----------------------- + -----------------------
+     (f(a)-f(b))*(f(a)-f(c))   (f(b)-f(a))*(f(b)-f(c))   (f(c)-f(a))*(f(c)-f(b))
+]
+	else
+		calculate "s" (secant rule)
+[
+                b - a
+s := b - f(b) * -----------
+                f(b) - f(a)
+]
+	end if
+	if (condition 1) "s" is not between (3*a + b)/4 and "b"
+	or (condition 2) (mflag is set, and, |s-b| >= |b-c|/2 )
+	or (condition 3) (mflag is cleared, and, |s-b| >= |c-d|/2 )
+	or (condition 4) (mflag is set, and, |b-c| < |delta|)
+	or (condition 5) (mflag is cleared, and, |c-d| < |delta|)
+	then
+		(bisection method)
+[
+     a + b
+s := -----
+     2
+]
+		set mflag
+	else
+		clear mflag
+	end if
+	calculate f(s)
+	d := c (d is assigned for the first time here, it won't be used above on the first iteration because mflag is set)
+	c := b
+	if f(a)*f(s) < 0 then
+		b := s
+	else
+		a := s
+	end if
+	if |f(a)| < |f(b)| then
+		swap(a,b)
+	end if
+end repeat
+output b or s (return the root)
+
+END Math recipe.
+
+

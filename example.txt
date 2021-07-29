@@ -1,0 +1,62 @@
+"set" "more_accuracy" 20
+"// hi, this is a comment in quotation marks"
+"// remember to pop() values you don't need anymore"
+
+0
+store a
+
+label 1
+
+1
+add
+store a
+a
+
+3
+compare
+
+ifneq
+goto 1
+endif
+
+"show"
+
+--"BEGIN COMMENT"
+{{1,2,3},123,100,10}
+{{1,2,3},123,100,10}
+"mult" "show"
+{{1,2,3},123,100,10}
+"negate" "show"
+{{1,2,3},123,100,10}
+"mult_inv" "show"
+{{1,2,3},123,100,10}
+{{1,2,3},123,100,10}
+"divide" "show"
+{{1},2,50,16}
+"show"
+"convert" 10 100 "show"
+--"END COMMENT"
+
+"store" "a"
+"a"
+"a"
+"add"
+"98.6"
+"101"
+"pop"
+"pop"
+"show"
+"store" "b"
+"a"
+"show"
+
+"1" "3" "divide" "show"
+
+"2"
+"1.41"
+"root" 2
+"show"
+
+2
+ln
+show

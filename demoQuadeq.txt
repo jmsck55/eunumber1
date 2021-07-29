@@ -1,0 +1,95 @@
+
+"begin comment"
+
+"// Quadratic Equation demo"
+"// "
+"// Functions are:"
+"// "
+"// add"
+"// negate"
+"// mult"
+"// mult_inv"
+"// divide"
+"// convert"
+"// root"
+"// "
+"// To use root use:"
+"// "
+"// 2 (number)"
+"// 1.41 (guess)"
+"// root 2 (square root)"
+"// show"
+
+
+"end comment"
+
+"// Begin user-modifiable arguments:"
+
+"// set more_accuracy 20"
+
+"// Example: Solve x^2 + 3x - 4 = 0"
+
+"// This might need to be modified:"
+
+"1" "// the guess"
+"store" "guess"
+
+"// store a,b,c:"
+
+"1"
+"store" "a"
+"show"
+"pop"
+
+"3"
+"store" "b"
+"show"
+"pop"
+
+"-4"
+"store" "c"
+"show"
+"pop"
+
+"// Every quadratic equation has two answers:"
+
+"// Answers for 'x' are {-4, 1}"
+
+"// End user-modifiable arguments."
+
+"// Begin Script code in Reverse Polish Notation (RPN):"
+
+"b" "negate"
+"store" "tmp0"
+"pop"
+
+"b" "b" "mult" "4" "a" "c" "mult" "mult" "negate" "add"
+"guess"
+"root" 2
+
+"store" "tmp1"
+"pop"
+
+"2" "a" "mult"
+"store" "tmp2"
+"pop"
+
+"tmp0" "tmp1" "// negate"
+"add"
+"tmp2"
+"divide"
+"store" "answer1"
+"show"
+"pop"
+
+"tmp0" "tmp1" "negate"
+"add"
+"tmp2"
+"divide"
+"store" "answer2"
+"show"
+"pop"
+
+"// Two answers: answer1 and answer2"
+
+"// End Script code."

@@ -1,0 +1,11 @@
+
+
+MyEunumber Tips:
+
+* Remove inaccuracies as you calculate.
+
+# As you calculate, you can remove the last digit(s) to improve accuracy:
+
+# Using: EunRoundSig(Eun n1, integer sigDigits = defaultTargetLength)
+
+Or, you can use the "adjustRound" variable.
