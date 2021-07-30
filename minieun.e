@@ -147,7 +147,7 @@ public constant DOUBLE_INT_MIN = - (DOUBLE_INT_MAX)
 public constant INT_MAX = power(2, 62) - 1 -- value: 4611686018427387903
 public constant INT_MAX10 = power(10, 18) -- value: 1000000000000000000
 public constant MAX_RADIX10 = power(10, 6) -- value: 1000000
-public constant MAX_RADIX = MAX_RADIX10 -- power(2, floor(62/2)-4) -- value: 134217728
+public constant MAX_RADIX = 1048576 -- power(2, floor(62/2)-4) -- value: 134217728
 public constant DOUBLE_RADIX = MAX_RADIX10 -- floor(sqrt(DOUBLE_INT_MAX)) + 1 -- 4294967296
 public constant DOUBLE_RADIX10 = MAX_RADIX10 -- 1000000000
 elsedef
@@ -156,7 +156,7 @@ public constant DOUBLE_INT_MIN = - (DOUBLE_INT_MAX)
 public constant INT_MAX = power(2, 30) - 1 -- value: 1073741823
 public constant INT_MAX10 = power(10, 9) -- value: 1000000000
 public constant MAX_RADIX10 = power(10, 3) -- value: 1000
-public constant MAX_RADIX = MAX_RADIX10 -- power(2, floor(30/2)-4) -- value: 2048
+public constant MAX_RADIX = 1024 -- MAX_RADIX10 -- power(2, floor(30/2)-4) -- value: 2048
 public constant DOUBLE_RADIX = MAX_RADIX10 -- floor(sqrt(DOUBLE_INT_MAX)) + 1 -- 94906266
 public constant DOUBLE_RADIX10 = MAX_RADIX10 -- 10000000
 end ifdef
@@ -236,7 +236,7 @@ public procedure SetZeroDividedByZeroFlag(Bool i)
 end procedure
 
 public type TargetLength(integer i)
-	return i >= 1 -- 4
+	return i >= 1
 end type
 
 public TargetLength defaultTargetLength = 70 -- 70 * 3 = 210 (I tried to keep it under 212)
@@ -1294,7 +1294,7 @@ public function ConvertExp(sequence n1, integer exp1, TargetLength targetLength,
 	return result
 end function
 
-
+--here
 public function IsProperLengthAndRadix(TargetLength targetLength = defaultTargetLength, AtomRadix radix = defaultRadix)
 	return (targetLength * power(radix - 1, 3) <= DOUBLE_INT_MAX)
 --here
@@ -1687,23 +1687,22 @@ public function FromMemoryToEun(atom ma)
 	sequence n1, n2
 	n1 = peek({ma, 4})
 	if equal(n1, "eun" & 32) then
-		n1 = peek4s({ma, 4}) & float64_to_atom(peek({ma + 4 * 4, 8}))
+		n1 = peek4s({ma + 4, 3}) & float64_to_atom(peek({ma + 4 * 4, 8}))
 		n2 = peek({ma + 4 * 4 + 8, n1[2]})
 	else
 ifdef BITS64 then
 		n1 = peek({ma, 8})
 		if equal(n1, "eun" & 64 & "    ") then
-			n1 = peek8s({ma, 4}) & float80_to_atom(peek({ma + 4 * 8, 10}))
+			n1 = peek8s({ma + 8, 3}) & float80_to_atom(peek({ma + 4 * 8, 10}))
 			n2 = peek({ma + 4 * 8 + 10, n1[2]})
 		elsif equal(n1, "eun" & 64 & "w   ") then
-			n1 = peek8s({ma, 4}) & float64_to_atom(peek({ma + 4 * 8, 8}))
+			n1 = peek8s({ma + 8, 3}) & float64_to_atom(peek({ma + 4 * 8, 8}))
 			n2 = peek({ma + 4 * 8 + 8, n1[2]})
 		else
 			return 0 -- unsupported format
 		end if
 end ifdef
 	end if
-	n1 = n1[2..$]
 	if n1[3] < 0 then
 		-- signed
 		n1[3] = -n1[3]
