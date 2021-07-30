@@ -1683,28 +1683,28 @@ public function FromMemoryToEun(atom ma)
 	n1 = peek({ma, 4})
 	if equal(n1, "eun" & 32) then
 		n1 = peek4s({ma, 4}) & float64_to_atom(peek({ma + 4 * 4, 8}))
-		n2 = peek({ma + 4 * 4 + 8, n1[1]})
+		n2 = peek({ma + 4 * 4 + 8, n1[2]})
 	else
 ifdef BITS64 then
 		n1 = peek({ma, 8})
 		if equal(n1, "eun" & 64 & "    ") then
 			n1 = peek8s({ma, 4}) & float80_to_atom(peek({ma + 4 * 8, 10}))
-			n2 = peek({ma + 4 * 8 + 10, n1[1]})
+			n2 = peek({ma + 4 * 8 + 10, n1[2]})
 		elsif equal(n1, "eun" & 64 & "w   ") then
 			n1 = peek8s({ma, 4}) & float64_to_atom(peek({ma + 4 * 8, 8}))
-			n2 = peek({ma + 4 * 8 + 8, n1[1]})
+			n2 = peek({ma + 4 * 8 + 8, n1[2]})
 		else
 			return 0 -- unsupported format
 		end if
 end ifdef
 	end if
-	n1 = n1[2..4]
+	n1 = n1[2..$]
 	if n1[3] < 0 then
 		-- signed
 		n1[3] = -n1[3]
 		n2 = Negate(n2)
 	end if
-	n2 = NewEun(n2, n1[2], Ceil(n1[3] * (log(n1[4]) / log(256))), 256)
+	n2 = NewEun(n2, n1[2], 1 + Ceil(n1[3] * (log(n1[4]) / log(256))), 256)
 	n1 = EunConvert(n2, n1[4], n1[3])
 	return n1
 end function
