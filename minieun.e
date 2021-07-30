@@ -1622,8 +1622,8 @@ end function
 
 -- Compression functions to store an "Eun" in memory:
 
-public function ToMemory(sequence n1, integer windows = FALSE)
-	integer offset, size
+public function ToMemory(sequence n1, integer windows = FALSE, integer degrade = FALSE)
+	integer offset, size, flag
 	atom ma
 	sequence n2
 	if not Eun(n1) then
@@ -1639,42 +1639,47 @@ public function ToMemory(sequence n1, integer windows = FALSE)
 			n2 = Negate(n2)
 		end if
 	end if
+	flag = 1
 ifdef BITS64 then
-	if windows then
-		offset = 4 * 8 + 8
-		size = offset + length(n2)
-		ma = allocate_data(size)
-		if ma = 0 then
-			return 0 -- couldn't allocate data
+	if not degrade then
+		flag = 0
+		if windows then
+			offset = 4 * 8 + 8
+			size = offset + length(n2)
+			ma = allocate_data(size)
+			if ma = 0 then
+				return 0 -- couldn't allocate data
+			end if
+			poke(ma, "eun" & 64 & "w   ") -- padded to 8-byte boundary
+			poke8(ma + 8, n1[1..3])
+			poke(ma + 4 * 8, atom_to_float64(n1[4]))
+			poke(ma + offset, n2)
+		else
+			offset = 4 * 8 + 10
+			size = offset + length(n2)
+			ma = allocate_data(size)
+			if ma = 0 then
+				return 0 -- couldn't allocate data
+			end if
+			poke(ma, "eun" & 64 & "    ") -- padded to 8-byte boundary
+			poke8(ma + 8, n1[1..3])
+			poke(ma + 4 * 8, atom_to_float80(n1[4]))
+			poke(ma + offset, n2)
 		end if
-		poke(ma, "eun" & 64 & "w   ") -- padded to 8-byte boundary
-		poke8(ma + 8, n1[1..3])
-		poke(ma + 4 * 8, atom_to_float64(n1[4]))
-		poke(ma + offset, n2)
-	else
-		offset = 4 * 8 + 10
-		size = offset + length(n2)
-		ma = allocate_data(size)
-		if ma = 0 then
-			return 0 -- couldn't allocate data
-		end if
-		poke(ma, "eun" & 64 & "    ") -- padded to 8-byte boundary
-		poke8(ma + 8, n1[1..3])
-		poke(ma + 4 * 8, atom_to_float80(n1[4]))
-		poke(ma + offset, n2)
 	end if
-elsedef
-	offset = 4 * 4 + 8
-	size = offset + length(n2)
-	ma = allocate_data(size)
-	if ma = 0 then
-		return 0 -- couldn't allocate data
-	end if
-	poke(ma, "eun" & 32)
-	poke4(ma + 4, n1[1..3])
-	poke(ma + 4 * 4, atom_to_float64(n1[4]))
-	poke(ma + offset, n2)
 end ifdef
+	if flag then
+		offset = 4 * 4 + 8
+		size = offset + length(n2)
+		ma = allocate_data(size)
+		if ma = 0 then
+			return 0 -- couldn't allocate data
+		end if
+		poke(ma, "eun" & 32)
+		poke4(ma + 4, n1[1..3])
+		poke(ma + 4 * 4, atom_to_float64(n1[4]))
+		poke(ma + offset, n2)
+	end if
 	return {ma, size}
 end function
 
