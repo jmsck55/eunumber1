@@ -3,5 +3,5 @@
 -- Update this version number whenever changing the library:
 
 public function GetVersion() -- revision number
-	return 189 -- completely type checked version
+	return 190 -- completely type checked version
 end function
