@@ -1094,8 +1094,8 @@ public function LongDivision(atom num, integer exp1, atom denom, integer exp2, T
 -- 	oldlen = length(guess)
 -- 	guess = TrimLeadingZeros(guess)
 -- 	exp0 += length(guess) - oldlen
-	exp0 += exp1 - exp2
-	return NewEun(guess, exp0, protoTargetLength, radix)
+	exp0 += exp1 - exp2 + 1
+	return AdjustRound(guess, exp0, protoTargetLength, radix, 0)
 end function
 
 public function ExpToAtom(sequence n1, integer exp1, PositiveInteger targetLen, AtomRadix radix)

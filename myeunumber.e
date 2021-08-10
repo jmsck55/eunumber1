@@ -285,7 +285,7 @@ public function ArcTanExp(sequence n1, integer exp1, TargetLength targetLength, 
 	else
 		moreAccuracy = 0 -- changed to 0
 	end if
-	targetLength += Z
+	-- targetLength += Z
 	protoTargetLength = targetLength + moreAccuracy
 	-- First iteration:
 	-- x*x + 1
@@ -337,7 +337,7 @@ public function ArcTanExp(sequence n1, integer exp1, TargetLength targetLength, 
 		call_proc(divideCallBackId, {3})
 		return {}
 	end if
-	ret = AdjustRound(ret[1], ret[2], targetLength - Z, radix, NO_SUBTRACT_ADJUST)
+	-- ret = AdjustRound(ret[1], ret[2], targetLength - Z, radix, NO_SUBTRACT_ADJUST)
 	return ret
 end function
 
@@ -1031,7 +1031,7 @@ public function EunSin(Eun x)
 -- return r
 	sequence y, half_pi, one_pi
 	integer targetLength, radix
-	targetLength = x[3] + Z
+	-- targetLength = x[3] + Z
 	radix = x[4]
 	half_pi = GetHalfPI(x[3], radix)
 	one_pi = GetPI(x[3], radix)
@@ -1050,7 +1050,7 @@ public function EunSin(Eun x)
 			y = CosExp(y[1], y[2], targetLength, radix)
 		end if
 	end if
-	y = AdjustRound(y[1], y[2], targetLength - Z, radix, NO_SUBTRACT_ADJUST)
+	-- y = AdjustRound(y[1], y[2], targetLength - Z, radix, NO_SUBTRACT_ADJUST)
 	return y
 end function
 
@@ -1067,7 +1067,7 @@ public function EunCos(Eun x)
 -- return r
 	sequence y, half_pi, var_pi
 	integer targetLength, radix
-	targetLength = x[3] + Z
+	-- targetLength = x[3] + Z
 	radix = x[4]
 	y = x
 	half_pi = GetHalfPI(x[3], radix)
@@ -1083,7 +1083,7 @@ public function EunCos(Eun x)
 		y = EunSubtract(y, var_pi)
 		y = SinExp(y[1], y[2], targetLength, radix)
 	end if
-	y = AdjustRound(y[1], y[2], targetLength - Z, radix, NO_SUBTRACT_ADJUST)
+	-- y = AdjustRound(y[1], y[2], targetLength - Z, radix, NO_SUBTRACT_ADJUST)
 	return y
 end function
 
@@ -1134,7 +1134,7 @@ public function ArcSinExp(sequence n1, integer exp1, TargetLength targetLength, 
 	else
 		moreAccuracy = 0 -- changed to 0
 	end if
-	targetLength += Z
+	-- targetLength += Z
 	protoTargetLength = targetLength + moreAccuracy
 	sum = {n1, exp1}
 	x = {n1, exp1}
@@ -1177,7 +1177,7 @@ public function ArcSinExp(sequence n1, integer exp1, TargetLength targetLength, 
 		call_proc(divideCallBackId, {3})
 		return {}
 	end if
-	ret = AdjustRound(ret[1], ret[2], targetLength - Z, radix, NO_SUBTRACT_ADJUST)
+	-- ret = AdjustRound(ret[1], ret[2], targetLength - Z, radix, NO_SUBTRACT_ADJUST)
 	return ret
 end function
 

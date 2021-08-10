@@ -5,7 +5,7 @@ with trace
 
 constant
     n1 = {
-           {-3},
+           {-7},
            2,
            70,
            10,
@@ -26,3 +26,5 @@ useLongDivision = TRUE
 ? lastIterCount
 
 useLongDivision = FALSE
+
+? LongDivision(1, 1, -7, 3, 70, 10)
