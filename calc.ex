@@ -12,7 +12,9 @@ include my.e
 
 -- with trace
 
-puts(1, "EuNumber Calculator [v1.0.0a]\nMade to varify against Microsoft's Calculator.")
+realMode = FALSE
+
+puts(1, "EuNumber Calculator [v1.0.0b]\nMade to varify against Microsoft's Calculator.")
 
 defaultTargetLength = 30
 adjustRound = 0
