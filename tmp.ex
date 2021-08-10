@@ -25,6 +25,4 @@ useLongDivision = TRUE
 ? EunMultiplicativeInverse(n1)
 ? lastIterCount
 
-useLongDivision = FALSE
-
 ? LongDivision(1, 1, -7, 3, 70, 10)
