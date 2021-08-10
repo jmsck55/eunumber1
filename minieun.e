@@ -56,7 +56,7 @@ ifdef USE_SMALL_RADIX then
 	end if
 end ifdef
 
-with trace
+-- with trace
 
 -- NOTE: Negated integer named variables should be in parenthesis.
 
