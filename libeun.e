@@ -393,6 +393,14 @@ end function
 
 -- More Accuracy variables:
 
+public procedure SetUseLongDivision(integer i)
+	my:SetUseLongDivision(i)
+end procedure
+
+public function GetUseLongDivision()
+	return my:GetUseLongDivision()
+end function
+
 public procedure SetMultiplicativeInverseMoreAccuracy(integer i)
 	my:SetMultiplicativeInverseMoreAccuracy(i - 1)
 end procedure
@@ -828,6 +836,16 @@ public function SubtractExp(integer n1, integer exp1, integer n2, integer exp2, 
 		exp2 = - (exp2)
 	end if
 	return NewFromEun(my:SubtractExp(numArray:get_data_from_object(n1), exp1, numArray:get_data_from_object(n2), exp2, targetLength, radix))
+end function
+
+public function LongDivision(integer doubleNum1, integer exp1, integer doubleDen2, integer exp2, integer targetLength, integer radix, Bool isNegExp1, Bool isNegExp2)
+	if isNegExp1 then
+		exp1 = - (exp1)
+	end if
+	if isNegExp2 then
+		exp2 = - (exp2)
+	end if
+	return NewFromEun(my:LongDivision(get_doubleAtom(doubleNum1), exp1, get_doubleAtom(doubleDen2), exp2, targetLength, radix))
 end function
 
 procedure dummy(integer i)

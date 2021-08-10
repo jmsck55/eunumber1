@@ -56,7 +56,7 @@ ifdef USE_SMALL_RADIX then
 	end if
 end ifdef
 
--- with trace
+with trace
 
 -- NOTE: Negated integer named variables should be in parenthesis.
 
@@ -951,6 +951,16 @@ end function
 -- Division and Multiply Inverse:
 -- https://en.wikipedia.org/wiki/Newton%27s_method#Multiplyiplicative_inverses_of_numbers_and_power_series
 
+public Bool useLongDivision = TRUE
+
+public procedure SetUseLongDivision(integer i)
+	useLongDivision = i -- increase this number for smaller radixes
+end procedure
+
+public function GetUseLongDivision()
+	return useLongDivision
+end function
+
 constant two = {2}
 PositiveInteger forSmallRadix = 0 -- this number can be 0 or greater
 
@@ -1060,6 +1070,7 @@ public function LongDivision(atom num, integer exp1, atom denom, integer exp2, T
 			if quot != 0 then
 				exit
 			end if
+			sleep(nanosleep)
 		end while
 		guess = {quot}
 	else
@@ -1084,7 +1095,7 @@ public function LongDivision(atom num, integer exp1, atom denom, integer exp2, T
 -- 	guess = TrimLeadingZeros(guess)
 -- 	exp0 += length(guess) - oldlen
 	exp0 += exp1 - exp2
-	return {guess, exp0, protoTargetLength, radix}
+	return NewEun(guess, exp0, protoTargetLength, radix)
 end function
 
 public function ExpToAtom(sequence n1, integer exp1, PositiveInteger targetLen, AtomRadix radix)
@@ -1146,15 +1157,17 @@ public function GetGuessExp(sequence den, integer exp1, integer protoTargetLengt
 	else
 		mySigDigits = sigDigits
 	end if
-	val = ToAtom(NewEun(den, exp1, protoTargetLength, radix))
-	if atom(val) and val != 0 then
-		denom = val
-		val = floor(log(denom) / static_logRadix)
-		if val <= INT_MAX then
-			exp2 = val
-			denom = denom / power(radix, exp2)
-			tmp = LongDivision(1, 0, denom, exp2, protoTargetLength, radix)
-			return tmp
+	if useLongDivision then
+		val = ToAtom(NewEun(den, exp1, protoTargetLength, radix))
+		if atom(val) and val != 0 then
+			denom = val
+			val = floor(log(abs(denom)) / static_logRadix)
+			if val <= INT_MAX then
+				exp2 = val
+				denom = denom / power(radix, exp2)
+				tmp = LongDivision(1, 0, denom, exp2, protoTargetLength, radix)
+				return tmp
+			end if
 		end if
 	end if
 	raised = length(den) - 1
@@ -1761,7 +1774,7 @@ end ifdef
 			len = length( st )
 			if len = 0 then
 				if padWithZeros then
-					return "0." & repeat('0', d[3] - 1) & "e" 
+					return "+0." & repeat('0', d[3] - 1) & "e+0"
 				else
 					return "0"
 				end if

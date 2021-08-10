@@ -5,13 +5,24 @@ with trace
 
 constant
     n1 = {
-           {2},
-           0,
+           {-3},
+           2,
            70,
-           1000,
+           10,
            0
          }
 
 
 trace(1)
+
+useLongDivision = FALSE
+
 ? EunMultiplicativeInverse(n1)
+? lastIterCount
+
+useLongDivision = TRUE
+
+? EunMultiplicativeInverse(n1)
+? lastIterCount
+
+useLongDivision = FALSE
