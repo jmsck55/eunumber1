@@ -1094,8 +1094,8 @@ public function LongDivision(atom num, integer exp1, atom denom, integer exp2, T
 -- 	oldlen = length(guess)
 -- 	guess = TrimLeadingZeros(guess)
 -- 	exp0 += length(guess) - oldlen
-	exp0 += exp1 - exp2
-	return NewEun(guess, exp0, protoTargetLength, radix)
+	exp0 += exp1 - exp2 + 1
+	return AdjustRound(guess, exp0, protoTargetLength, radix, FALSE)
 end function
 
 public function ExpToAtom(sequence n1, integer exp1, PositiveInteger targetLen, AtomRadix radix)
@@ -1179,7 +1179,7 @@ public function GetGuessExp(sequence den, integer exp1, integer protoTargetLengt
 	guess = IntToDigits(ans, radix) -- works on negative numbers
 	-- tmp = AdjustRound(guess, exp1, mySigDigits - 1, radix, FALSE)
 	-- tmp[3] = protoTargetLength
-	return NewEun(guess, - (exp1) - 1, protoTargetLength, radix)
+	return AdjustRound(guess, - (exp1) - 1, protoTargetLength, radix, FALSE)
 end function
 
 
@@ -1236,11 +1236,10 @@ public function MultiplicativeInverseExp(sequence den1, integer exp1, TargetLeng
 		ret = GetGuessExp(den1, exp1, protoTargetLength, radix)
 		guess = ret[1]
 		exp0 = ret[2]
--- 	else
--- 		exp0 = - (exp1) - 1
+	else
+		exp0 = - (exp1) - 1
+		ret = AdjustRound(guess, exp0, targetLength, radix, FALSE)
 	end if
-	exp0 = - (exp1) - 1
-	ret = AdjustRound(guess, exp0, targetLength, radix, FALSE)
 	lastIterCount = iter
 	for i = 1 to iter do
 		lookat = ret
