@@ -1410,8 +1410,9 @@ public function EunNegate(Eun n1)
 end function
 -- EunAbsoluteValue
 public function EunAbsoluteValue(Eun n1)
-	n1[1] = AbsoluteValue(n1[1])
-	return n1
+	sequence num
+	num = AbsoluteValue(n1[1])
+	return AdjustRound(num, n1[2], n1[3], n1[4], NO_SUBTRACT_ADJUST)
 end function
 -- EunSubtract
 public function EunSubtract(Eun n1, Eun n2)
