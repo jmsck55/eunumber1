@@ -147,8 +147,8 @@ public constant DOUBLE_INT_MIN = - (DOUBLE_INT_MAX)
 public constant INT_MAX = power(2, 62) - 1 -- value: 4611686018427387903
 public constant INT_MAX10 = power(10, 18) -- value: 1000000000000000000
 public constant MAX_RADIX10 = power(10, 6) -- value: 1000000
-public constant MAX_RADIX = 1048576 -- power(2, floor(62/2)-4) -- value: 134217728
-public constant DOUBLE_RADIX = MAX_RADIX10 -- floor(sqrt(DOUBLE_INT_MAX)) + 1 -- 4294967296
+public constant MAX_RADIX = 4194304 -- power(2, floor(62/2)-4) -- value: 134217728
+public constant DOUBLE_RADIX = MAX_RADIX -- floor(sqrt(DOUBLE_INT_MAX)) + 1 -- 4294967296
 public constant DOUBLE_RADIX10 = MAX_RADIX10 -- 1000000000
 elsedef
 public constant DOUBLE_INT_MAX = 9007199254740991 -- (power(2, 53) - 1)
@@ -156,13 +156,29 @@ public constant DOUBLE_INT_MIN = - (DOUBLE_INT_MAX)
 public constant INT_MAX = power(2, 30) - 1 -- value: 1073741823
 public constant INT_MAX10 = power(10, 9) -- value: 1000000000
 public constant MAX_RADIX10 = power(10, 3) -- value: 1000
-public constant MAX_RADIX = 1024 -- MAX_RADIX10 -- power(2, floor(30/2)-4) -- value: 2048
-public constant DOUBLE_RADIX = MAX_RADIX10 -- floor(sqrt(DOUBLE_INT_MAX)) + 1 -- 94906266
+public constant MAX_RADIX = 2048 -- MAX_RADIX10 -- power(2, floor(30/2)-4) -- value: 2048
+public constant DOUBLE_RADIX = MAX_RADIX -- floor(sqrt(DOUBLE_INT_MAX)) + 1 -- 94906266
 public constant DOUBLE_RADIX10 = MAX_RADIX10 -- 10000000
 end ifdef
 
 export function iff(integer condition, object iftrue, object iffalse)
 	if condition then
+		return iftrue
+	else
+		return iffalse
+	end if
+end function
+
+export function min(atom iftrue, atom iffalse)
+	if iftrue < iffalse then
+		return iftrue
+	else
+		return iffalse
+	end if
+end function
+
+export function max(atom iftrue, atom iffalse)
+	if iftrue > iffalse then
 		return iftrue
 	else
 		return iffalse
@@ -211,9 +227,9 @@ end type
 
 public type AtomRadix(atom a)
 ifdef USE_SMALL_RADIX then
-	return a >= 1.001 and a <= DOUBLE_RADIX -- must be larger than 1.0
+	return a >= 1.001 and a <= DOUBLE_INT_MAX -- must be larger than 1.0
 elsedef
-	return a >= 2 and a <= DOUBLE_RADIX -- must be 2.0 or larger
+	return a >= 2 and a <= DOUBLE_INT_MAX -- must be 2.0 or larger
 end ifdef
 end type
 
@@ -484,21 +500,35 @@ public function NegativeCarry(sequence numArray, AtomRadix radix)
 	return numArray
 end function
 
-public function Add(sequence n1, sequence n2)
-	integer c, len
+public function Add(sequence n1, sequence n2, integer len = min(length(n1), length(n2)))
+	integer c
 	sequence numArray, tmp
-	if length(n1) >= length(n2) then
-		len = length(n2)
-		c = length(n1) - (len)
+	c = length(n1) - length(n2)
+	if c > 0 then
+		-- len = length(n2)
+		-- c = length(n1) - (len)
 		-- copy n1 to numArray:
 		numArray = n1
 		tmp = n2
+		--for i = 1 to len do
+		--	c += 1
+		--	n1[c] += n2[i]
+		--	sleep(nanosleep)
+		--end for
+		--return n1
 	else
-		len = length(n1)
-		c = length(n2) - (len)
+		c = - (c)
+		-- len = length(n1)
+		-- c = length(n2) - (len)
 		-- copy n2 to numArray:
 		numArray = n2
 		tmp = n1
+		--for i = 1 to len do
+		--	c += 1
+		--	n2[c] += n1[i]
+		--	sleep(nanosleep)
+		--end for
+		--return n2
 	end if
 	for i = 1 to len do
 		c += 1
@@ -508,37 +538,38 @@ public function Add(sequence n1, sequence n2)
 	return numArray
 end function
 
-public function Subtr(sequence n1, sequence n2)
-	integer c, len
-	sequence numArray, tmp
-	if length(n1) >= length(n2) then
-		len = length(n2)
-		c = length(n1) - (len)
+public function Subtr(sequence n1, sequence n2, integer len = min(length(n1), length(n2)))
+	integer c
+	c = length(n1) - length(n2)
+	if c > 0 then
+		-- len = length(n2)
+		-- c = length(n1) - (len)
 		-- copy n1 to numArray:
-		numArray = n1
-		tmp = n2
+		-- numArray = n1
 		for i = 1 to len do
 			c += 1
-			numArray[c] -= tmp[i]
+			n1[c] -= n2[i]
 			sleep(nanosleep)
 		end for
+		return n1
 	else
-		len = length(n1)
-		c = length(n2) - (len)
+		c = - (c)
+		-- len = length(n1)
+		-- c = length(n2) - (len)
 		-- numArray = n2[1..c+1] & (n1 - n2[c+2..$])
 		-- numArray = repeat(0, length(n2))
 		-- numArray[1..c+1] = n2[1..c+1]
 		-- numArray[c+2..$] = n1 - n2[c+2..$]
 		-- copy n2 to numArray:
-		numArray = n2
-		tmp = n1
+		-- numArray = n2
+		-- tmp = n1
 		for i = 1 to len do
 			c += 1
-			numArray[c] = tmp[i] - numArray[c]
+			n2[c] = n1[i] - n2[c]
 			sleep(nanosleep)
 		end for
+		return n2
 	end if
-	return numArray
 end function
 
 public function Sum(sequence dst, sequence srcs)
@@ -596,7 +627,7 @@ ifdef EUN_MINI_MULT then
 	for i = 1 to length(n1) do
 		g = n1[i]
 		j = 1
-		for h = i to iff(len < f, len, f) do
+		for h = i to min(len, f) do
 			numArray[h] += g * n2[j]
 			j += 1
 			sleep(nanosleep)
@@ -860,7 +891,11 @@ end if
 				else
 					num = NegativeCarry(num, radix)
 				end if
-				exponent += (length(num) - (roundTargetLength))
+				oldlen = length(num) - (roundTargetLength)
+				if ROUND_TO_NEAREST_OPTION then
+					targetLength += oldlen
+				end if
+				exponent += oldlen
 			else
 				rounded = (num[1] < 0) - (num[1] > 0) -- give the opposite of the sign
 			end if
@@ -881,7 +916,15 @@ atom multlogt, multlogr
 
 public function MultiplyExp(sequence n1, integer exp1, sequence n2, integer exp2, TargetLength targetLength, AtomRadix radix)
 	sequence numArray, ret
-	integer len, flag = 0
+	integer lastTargetLength, len, flag = 0, exponent
+	exponent = exp1 + exp2
+	if ROUND_TO_NEAREST_OPTION then
+		targetLength = exponent + 1 + adjustRound
+		lastTargetLength = targetLength
+	else
+		lastTargetLength = targetLength
+		targetLength -= adjustRound
+	end if
 	if multLastLen != targetLength then
 		multLastLen = targetLength
 		multlogt = log(targetLength)
@@ -902,7 +945,7 @@ public function MultiplyExp(sequence n1, integer exp1, sequence n2, integer exp2
 		len = multLen
 	end if
 	numArray = Multiply(n1, n2, len)
-	ret = AdjustRound(numArray, exp1 + exp2, targetLength, radix, FALSE) -- TRUE for backwards compatability
+	ret = AdjustRound(numArray, exponent, lastTargetLength, radix, FALSE) -- TRUE for backwards compatability
 	return ret
 end function
 
@@ -912,39 +955,46 @@ end function
 
 
 public function AddExp(sequence n1, integer exp1, sequence n2, integer exp2, TargetLength targetLength, AtomRadix radix)
-	sequence numArray, ret
-	integer size
-	size = (length(n1) - (exp1)) - (length(n2) - (exp2))
-	if size < 0 then
-		size = - (size)
-		n1 = n1 & repeat(0, size)
-	elsif 0 < size then
-		n2 = n2 & repeat(0, size)
+	sequence ret
+	integer size, flag, exponent --, lastTargetLength
+	flag = -1
+	if not length(n1) then
+		n1 = n2 -- returning n1
+		flag = NO_SUBTRACT_ADJUST
 	end if
-	if exp1 < exp2 then
-		exp1 = exp2
+	if not length(n2) then
+		-- numArray = n1
+		flag = NO_SUBTRACT_ADJUST
 	end if
-	numArray = Add(n1, n2)
-	ret = AdjustRound(numArray, exp1, targetLength, radix, IsNegative(n1) xor IsNegative(n2))
+	exponent = iff(exp1 > exp2, exp1, exp2)
+	if flag = -1 then
+		flag = IsNegative(n1) xor IsNegative(n2)
+		size = (length(n1) - (exp1)) - (length(n2) - (exp2))
+		if size < 0 then
+			n1 = n1 & repeat(0, - (size))
+		elsif size > 0 then
+			n2 = n2 & repeat(0, size)
+		end if
+		if length(n1) < length(n2) then
+			sequence tmp
+			tmp = n1
+			n1 = n2
+			n2 = tmp
+		end if
+		-- numArray = Add(n1, n2, len)
+		size = length(n1) - length(n2)
+		for i = 1 to length(n2) do
+			size += 1
+			n1[size] += n2[i]
+			sleep(nanosleep)
+		end for
+	end if
+	ret = AdjustRound(n1, exponent, targetLength, radix, flag)
 	return ret
 end function
 
 public function SubtractExp(sequence n1, integer exp1, sequence n2, integer exp2, TargetLength targetLength, AtomRadix radix)
-	sequence numArray, ret
-	integer size
-	size = (length(n1) - (exp1)) - (length(n2) - (exp2))
-	if size < 0 then
-		size = - (size)
-		n1 = n1 & repeat(0, size)
-	elsif 0 < size then
-		n2 = n2 & repeat(0, size)
-	end if
-	if exp1 < exp2 then
-		exp1 = exp2
-	end if
-	numArray = Subtr(n1, n2)
-	ret = AdjustRound(numArray, exp1, targetLength, radix, IsNegative(n1) xor (not IsNegative(n2)))
-	return ret
+	return AddExp(n1, exp1, Negate(n2), exp2, targetLength, radix)
 end function
 
 
@@ -1306,10 +1356,10 @@ public function ConvertExp(sequence n1, integer exp1, TargetLength targetLength,
 	return result
 end function
 
---here
+
 public function IsProperLengthAndRadix(TargetLength targetLength = defaultTargetLength, AtomRadix radix = defaultRadix)
 	return (targetLength * power(radix - 1, 3) <= DOUBLE_INT_MAX)
---here
+
 -- On 64-bit systems, long double has significand precision of 64 bits: DOUBLE_MAX = (power(2, 64) - 1) -- value: 18446744073709551615
 -- On 32-bit systems, double has significand precision of 53 bits: DOUBLE_MAX = (power(2, 53) - 1) -- value: 9007199254740991
 end function
