@@ -1030,24 +1030,22 @@ public function EunSin(Eun x)
 -- end if
 -- return r
 	sequence y, half_pi, one_pi
-	integer targetLength, radix
-	-- targetLength = x[3] + Z
-	radix = x[4]
-	half_pi = GetHalfPI(x[3], radix)
-	one_pi = GetPI(x[3], radix)
+	-- targetLength = x[3] -- + Z
+	half_pi = GetHalfPI(x[3], x[4])
+	one_pi = GetPI(x[3], x[4])
 	y = EunfMod(x, one_pi)
 	if EunCompare(y, half_pi) <= 0 then
 		if EunCompare(y, EunNegate(half_pi)) >= 0 then
-			y = SinExp(y[1], y[2], targetLength, radix)
+			y = SinExp(y[1], y[2], y[3], y[4])
 		end if
 	else
 		if IsNegative(y[1]) then
 			y = EunAdd(y, half_pi)
-			y = CosExp(y[1], y[2], targetLength, radix)
+			y = CosExp(y[1], y[2], y[3], y[4])
 			y = EunNegate(y)
 		else
 			y = EunSubtract(y, half_pi)
-			y = CosExp(y[1], y[2], targetLength, radix)
+			y = CosExp(y[1], y[2], y[3], y[4])
 		end if
 	end if
 	-- y = AdjustRound(y[1], y[2], targetLength - Z, radix, NO_SUBTRACT_ADJUST)
@@ -1066,22 +1064,20 @@ public function EunCos(Eun x)
 -- end if
 -- return r
 	sequence y, half_pi, var_pi
-	integer targetLength, radix
-	-- targetLength = x[3] + Z
-	radix = x[4]
+	-- targetLength = x[3] -- + Z
+	half_pi = GetHalfPI(x[3], x[4])
+	var_pi = EunMultiply(half_pi, NewEun({4}, 0, x[3], x[4]))
 	y = x
-	half_pi = GetHalfPI(x[3], radix)
-	var_pi = EunMultiply(half_pi, NewEun({4}, 0, targetLength, radix))
 	y[1] = AbsoluteValue(y[1])
 	y = EunfMod(y, var_pi) -- y = abs(x) mod 2*pi
-	var_pi = EunMultiply(half_pi, NewEun({2}, 0, targetLength, radix))
+	var_pi = EunMultiply(half_pi, NewEun({2}, 0, x[3], y[4]))
 	if EunCompare(y, var_pi) < 0 then -- if (y < pi) then
-		y = CosExp(y[1], y[2], targetLength, radix)
+		y = CosExp(y[1], y[2], y[3], y[4])
 	else
 		-- return sin(y - (3/2)*pi)
-		var_pi = EunMultiply(half_pi, NewEun({3}, 0, targetLength, radix))
+		var_pi = EunMultiply(half_pi, NewEun({3}, 0, y[3], y[4]))
 		y = EunSubtract(y, var_pi)
-		y = SinExp(y[1], y[2], targetLength, radix)
+		y = SinExp(y[1], y[2], y[3], y[4])
 	end if
 	-- y = AdjustRound(y[1], y[2], targetLength - Z, radix, NO_SUBTRACT_ADJUST)
 	return y

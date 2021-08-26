@@ -1358,6 +1358,11 @@ end function
 
 
 public function IsProperLengthAndRadix(TargetLength targetLength = defaultTargetLength, AtomRadix radix = defaultRadix)
+	if ROUND_TO_NEAREST_OPTION then
+		targetLength += adjustRound
+	else
+		targetLength -= adjustRound
+	end if
 	return (targetLength * power(radix - 1, 3) <= DOUBLE_INT_MAX)
 
 -- On 64-bit systems, long double has significand precision of 64 bits: DOUBLE_MAX = (power(2, 64) - 1) -- value: 18446744073709551615
