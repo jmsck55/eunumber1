@@ -663,6 +663,9 @@ public function EunExpFast(Eun numerator, Eun denominator)
 	else
 		targetLength = denominator[3]
 	end if
+	if denominator[2] = 0 and equal(denominator[1], {1}) then
+		return EunExp(numerator)
+	end if
 	object tmp0, tmp1
 	tmp1 = ExpExpFast(numerator[1], numerator[2], denominator[1], denominator[2], targetLength, numerator[4])
 	while 1 do
@@ -702,7 +705,6 @@ public function LogExp(sequence n1, integer exp1, sequence guess, integer exp0, 
 	sequence expY, xMinus, xPlus, tmp, lookat, ret, one
 	integer protoTargetLength, moreAccuracy
 	logHowComplete = {-1, 0}
-	one = NewEun({1}, 0, protoTargetLength, radix)
 	if logMoreAccuracy >= 0 then
 		moreAccuracy = logMoreAccuracy
 	elsif calculationSpeed then
@@ -712,6 +714,7 @@ public function LogExp(sequence n1, integer exp1, sequence guess, integer exp0, 
 	end if
 	-- targetLength += Z
 	protoTargetLength = targetLength + moreAccuracy
+	one = NewEun({1}, 0, protoTargetLength, radix)
 	guess = NewEun(guess, exp0, protoTargetLength, radix)
 	ret = guess
 	logIterCount = logIter
@@ -775,8 +778,16 @@ end function
 
 -- Powers: a number (base), raised to the power of another number (raisedTo)
 
-public function EunPower(Eun base, Eun raisedTo)
-	return EunExp(EunMultiply(EunLog(base), raisedTo))
+public function EunPower(Eun base, Eun raisedTo, integer round = Z)
+	object tmp = EunExp(EunMultiply(EunLog(base), raisedTo))
+	if round > 0 then
+		tmp = EunAdjustRound(tmp, adjustRound + round + 1)
+	end if
+	return tmp
+end function
+
+public function EunGeneralRoot(Eun rooted, Eun anyNumber, integer round = Z)
+	return EunPower(rooted, EunMultiplicativeInverse(anyNumber), round)
 end function
 
 --BEGIN TRIG FUNCTIONS:

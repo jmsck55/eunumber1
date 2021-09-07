@@ -1,9 +1,26 @@
 
+-- with trace
+
 include my.e
 
-with trace
+-- trace(1)
 
-constant
+object a, b, c, d
+
+a = ToEun(10)
+b = ToEun(100)
+
+c = EunPower(a, b, 2) -- the "2" is to make it more accurate.
+
+puts(1, ToString(c, TRUE) & "\n")
+
+d = EunGeneralRoot(c, a, 2) -- the "2" is to make it more accurate.
+
+puts(1, ToString(d, TRUE) & "\n")
+
+abort(0)
+
+object
     n1 = {
            {-7},
            2,

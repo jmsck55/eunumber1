@@ -1150,8 +1150,20 @@ end function
 
 -- Powers: a number (base), raised to the power of another number (raisedTo)
 
-public function EunPower(integer base, integer raisedTo)
-	return NewFromEun(my:EunPower(GetEun(base), GetEun(raisedTo)))
+public function EunPower(integer base, integer raisedTo, integer round)
+	if round = 0 then
+		return NewFromEun(my:EunPower(GetEun(base), GetEun(raisedTo)))
+	else
+		return NewFromEun(my:EunPower(GetEun(base), GetEun(raisedTo), round))
+	end if
+end function
+
+public function EunGeneralRoot(integer rooted, integer anyNumber, integer round)
+	if round = 0 then
+		return NewFromEun(my:EunGeneralRoot(GetEun(rooted), GetEun(anyNumber)))
+	else
+		return NewFromEun(my:EunGeneralRoot(GetEun(rooted), GetEun(anyNumber), round))
+	end if
 end function
 
 -- Begin Trig Functions:

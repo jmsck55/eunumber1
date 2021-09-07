@@ -1009,7 +1009,7 @@ public function SubtractExp(sequence n1, integer exp1, sequence n2, integer exp2
 		if not length(n2) then
 			return NewEun({}, 0, targetLength, radix)
 		end if
-		numArray = Negate(n2) -- returning n1
+		numArray = Negate(n2) -- returning numArray
 		exponent = exp2
 		flag = NO_SUBTRACT_ADJUST
 	elsif not length(n2) then
@@ -1883,7 +1883,11 @@ end ifdef
 				sleep(nanosleep)
 			end for
 			if padWithZeros then
-				st = st & repeat('0', d[3] - len)
+				if ROUND_TO_NEAREST_OPTION then
+					st = st & repeat('0', d[3] - (len))
+				else
+					st = st & repeat('0', (d[3] - adjustRound) - (len))
+				end if
 			end if
 			if f then
 				st = "-" & st

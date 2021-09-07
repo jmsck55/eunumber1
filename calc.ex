@@ -3,24 +3,22 @@
 -- See also videos and resources on the web about imaginary and complex numbers:
 -- https://www.youtube.com/watch?v=T647CGsuOVU
 
--- without type_check
-
 include std/console.e
 include std/get.e
 
-include my.e
+with trace
 
--- with trace
+include my.e
 
 realMode = FALSE
 
-puts(1, "EuNumber Calculator [v1.0.0b]\nMade to varify against Microsoft's Calculator.")
+puts(1, "EuNumber Calculator [v1.0.0c]\nMade to varify against Microsoft's Calculator.")
 
-defaultTargetLength = 30
-adjustRound = 0
-calculationSpeed = 30
+defaultTargetLength = 34
+adjustRound = 3
+calculationSpeed = 34
 
-SetAdjustPrecision(2)
+SetAdjustPrecision(3)
 
 object tmp
 sequence st, vars
@@ -285,10 +283,10 @@ end procedure
 procedure Operations()
 	
 	while 1 do
-		puts(1, "Math Operations: [ q + - * / n i c = f p o t s r w e l S C AS AT Q ]\n")
+		puts(1, "Math Operations: [ q + - * / n i c = f p o t s r w e l P S C AS AT Q ]\n")
 		puts(1, " [+]Add [-]Subtract [*]Multiply [/]divide [n]egate [i]nverse\n")
 		puts(1, " [c]convert [=]compare [f]fractpart [p]intpart [o]Round [t]RoundToInt\n")
-		puts(1, " [s]sqrt [r]root [w]wholeExp [e]exp [l]log\n")
+		puts(1, " [s]sqrt [r]root [w]wholeExp [e]exp [l]log [P]power\n")
 		puts(1, " [S]ine [C]os [AS]arcsin [AT]arctan [Q]quadraticEquation\n")
 		puts(1, " [q]uit [exit]\n")
 		puts(1, "Complex numbers: Complex [ + - * / n i s R I T N Q ]\n")
@@ -313,7 +311,7 @@ procedure Operations()
 			puts(1, "Program shutdown normally.\n")
 			abort(0)
 		end if
-		if not length(st) or equal(st, "q") or not find(st[1], "+-*/nic=fpotsrwelSCAQRITN") then
+		if not length(st) or equal(st, "q") or not find(st[1], "+-*/nic=fpotsrwelPSCAQRITN") then
 			exit
 		end if
 		ch = st[1]
@@ -461,9 +459,11 @@ procedure Operations()
 			puts(1, "convert:\n")
 			defaultRadix = prompt_number("enter new defaultRadix: ", {2, MAX_RADIX})
 			defaultTargetLength = prompt_number("enter new defaultTargetLength: ", {2, INT_MAX})
+			adjustRound = prompt_number("enter new adjustRound: ", {0, defaultTargetLength})
 			printf(1, "Current Rounding method is %d\n", {ROUND})
 			puts(1, " ROUND_TOWARDS_INFINITY = 1\n")
 			puts(1, " ROUND_TOWARDS_ZERO = 2\n")
+			puts(1, " ROUND_TRUNCATE = 3\n")
 			puts(1, " ROUND_UP = 4\n")
 			puts(1, " ROUND_DOWN = 5\n")
 			puts(1, " ROUND_EVEN = 6\n")
@@ -520,33 +520,24 @@ procedure Operations()
 			puts(1, "root function (real part of numbers only):\n")
 			ch = prompt_number("enter root (2 to intMax): ", {0, INT_MAX})
 			if ch >= 2 and integer(ch) then
-				puts(1, "enter guess:\n")
-				st = GetVars(1)
-				if length(st) then
-					n2 = st[1][1]
-					if n1[4] != n2[4] then
-						n1 = EunConvert(n1, defaultRadix, defaultTargetLength)
-						n2 = EunConvert(n2, defaultRadix, defaultTargetLength)
+				n1 = EunNthRoot(ch, n1)
+				if length(n1) = 3 then
+					tmp = n1
+					puts(1, "Even roots have two answers, one is negative, the other is positive\n")
+					if tmp[1] = 1 then
+						puts(1, "Warning: Imaginary Number\n")
+						n1 = NewEun()
+						c1 = tmp[2]
+						n2 = NewEun()
+						c2 = tmp[3]
+					else
+						n1 = tmp[2]
+						c1 = NewEun()
+						n2 = tmp[3]
+						c2 = NewEun()
 					end if
-					n1 = EunNthRoot(ch, n1, n2)
-					if length(n1) = 3 then
-						tmp = n1
-						puts(1, "Even roots have two answers, one is negative, the other is positive\n")
-						if tmp[1] = 1 then
-							puts(1, "Warning: Imaginary Number\n")
-							n1 = NewEun()
-							c1 = tmp[2]
-							n2 = NewEun()
-							c2 = tmp[3]
-						else
-							n1 = tmp[2]
-							c1 = NewEun()
-							n2 = tmp[3]
-							c2 = NewEun()
-						end if
-						st = {{n1, c1}, {n2, c2}}
-						StoreAnswers(2) -- uses "st"
-					end if
+					st = {{n1, c1}, {n2, c2}}
+					StoreAnswers(2) -- uses "st"
 				end if
 				puts(1, "SUCCESS!\n")
 			else
@@ -586,8 +577,24 @@ procedure Operations()
 			end if
 		case 'l' then
 			puts(1, "log (real):\n")
-			n1 = EunLog(n1)
+			st = EunLog(n1)
+			n1 = st
 			puts(1, "SUCCESS!\n")
+		case 'P' then
+			puts(1, "power (real):\n")
+			st = GetVars(1)
+			if length(st) then
+				n2 = st[1][1]
+				if n1[4] != n2[4] then
+					n1 = EunConvert(n1, defaultRadix, defaultTargetLength)
+					n2 = EunConvert(n2, defaultRadix, defaultTargetLength)
+				end if
+				st = EunPower(n1, n2)
+				n1 = st
+				puts(1, "SUCCESS!\n")
+			else
+				puts(1, "aborted.\n")
+			end if
 		case 'S' then
 			puts(1, "sine (real):\n")
 			n1 = EunSin(n1)
