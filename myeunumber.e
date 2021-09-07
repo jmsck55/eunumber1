@@ -202,47 +202,19 @@ public function EunNthRoot(PositiveScalar n, Eun n1, object guess = 0)
 	end if
 end function
 
-public function EunSquareRoot(Eun n1, object guess = {})
+public function EunSqrt(Eun n1, object guess = 0)
 -- Set "realMode" variable to TRUE (or 1), if you want it to crash if supplied a negative number.
 -- Use "isImag" to determine if the result is complex, 
 -- which will happen if a negative number is passed to this function.
 	return EunNthRoot(2, n1, guess)
 end function
 
-public function EunCubeRoot(Eun n1, object guess = {})
+public function EunCubeRoot(Eun n1, object guess = 0)
 	return EunNthRoot(3, n1, guess)
 end function
 
-public function EunSqrt(Eun n1)
-	object tmp
-	sequence guess, ret
-	integer exp
-	atom a
-	exp = n1[2]
-	-- factor out a perfect square, of a power of radix, an even number
-	if IsIntegerOdd(exp) then
-		if exp > 0 then
-			exp -= 1
-		else
-			exp += 1
-		end if
-	end if
-	n1[2] -= exp
-	tmp = ToAtom(n1)
-	a = tmp
-	if a < 0 then
-		-- factor out sqrt(-1), an imaginary number
-		a = -a -- atom
-	end if
-	a = sqrt(a)
-	tmp = ToEun(a, n1[4], n1[3])
-	guess = tmp
-	ret = EunSquareRoot(n1, guess)
-	exp = floor(exp / 2)
-	ret[2][2] += exp
-	ret[3][2] += exp
-	-- returns isImag for if imaginary, and two answers: {one positive, one negative}
-	return ret
+public function EunFourthRoot(Eun n1, object guess = 0)
+	return EunNthRoot(4, n1, guess)
 end function
 
 --mymath.e
@@ -1519,13 +1491,13 @@ public function EunTriangulation(Eun angleA, Eun angleB, Eun distance, WhichOnes
 	realMode = TRUE
 	sa = EunSin(angleA)
 	sb = EunSin(angleB)
-	dsquared = EunSquare(distance)
+	dsquared = EunSquared(distance)
 	s = {0, 0}
 	if and_bits(whichOnes, 1) then
 		tmp = EunSqrt(
 			EunDivide(
 				dsquared,
-				EunAdd({{1}, 0, angleA[3], angleA[4]}, EunSquare(EunDivide(sa, sb)))
+				EunAdd({{1}, 0, angleA[3], angleA[4]}, EunSquared(EunDivide(sa, sb)))
 			)
 		)
 		s[1] = tmp[2]
@@ -1534,7 +1506,7 @@ public function EunTriangulation(Eun angleA, Eun angleB, Eun distance, WhichOnes
 		tmp = EunSqrt(
 			EunDivide(
 				dsquared,
-				EunAdd({{1}, 0, angleA[3], angleA[4]}, EunSquare(EunDivide(sb, sa)))
+				EunAdd({{1}, 0, angleA[3], angleA[4]}, EunSquared(EunDivide(sb, sa)))
 			)
 		)
 		s[2] = tmp[2]

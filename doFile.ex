@@ -8,7 +8,7 @@ include std/console.e
 include std/get.e
 include std/io.e
 include std/map.e
-include std/pretty.e
+--include std/pretty.e
 include std/stack.e
 --include std/text.e
 include std/types.e
@@ -525,7 +525,7 @@ for i = 4 to length(cmd) do
 			--? ans
 		case "sqrt" then -- square root, using a guess
 			s = GetNums(2)
-			ans = EunSquareRoot(s[2], s[1])
+			ans = EunSqrt(s[2], s[1])
 			
 			-- EuNumber: put "ob" into stack "nums"
 			stack:push(nums, ans)

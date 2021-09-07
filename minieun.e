@@ -93,7 +93,7 @@ end ifdef
 -- Sum
 -- ConvertRadix
 -- Multiply
--- Square
+-- Squared
 -- IsNegative
 -- Negate
 -- AbsoluteValue
@@ -116,7 +116,7 @@ end ifdef
 -- NewEun
 -- EunAdjustRound(Eun n1, integer adjustBy = 0)
 -- EunMultiply
--- EunSquare
+-- EunSquared
 -- EunAdd
 -- EunNegate
 -- EunAbsoluteValue
@@ -668,13 +668,20 @@ end ifdef
 	return numArray
 end function
 
-public function Square(sequence n1)
+public function Squared(sequence n1)
 	return Multiply(n1, n1) -- multiply it by its self, once
 end function
 
 public function IsNegative(sequence numArray)
 	if length(numArray) then
 		return numArray[1] < 0
+	end if
+	return 0
+end function
+
+public function IsPositive(sequence numArray)
+	if length(numArray) then
+		return numArray[1] >= 0
 	end if
 	return 0
 end function
@@ -949,26 +956,25 @@ public function MultiplyExp(sequence n1, integer exp1, sequence n2, integer exp2
 	return ret
 end function
 
-public function SquareExp(sequence n1, integer exp1, TargetLength targetLength, AtomRadix radix)
+public function SquaredExp(sequence n1, integer exp1, TargetLength targetLength, AtomRadix radix)
 	return MultiplyExp(n1, exp1, n1, exp1, targetLength, radix)
 end function
 
 
 public function AddExp(sequence n1, integer exp1, sequence n2, integer exp2, TargetLength targetLength, AtomRadix radix)
 	sequence ret
-	integer size, flag, exponent --, lastTargetLength
-	flag = -1
+	integer size, flag, exponent
 	if not length(n1) then
 		n1 = n2 -- returning n1
+		exponent = exp2
 		flag = NO_SUBTRACT_ADJUST
-	end if
-	if not length(n2) then
+	elsif not length(n2) then
 		-- numArray = n1
+		exponent = exp1
 		flag = NO_SUBTRACT_ADJUST
-	end if
-	exponent = iff(exp1 > exp2, exp1, exp2)
-	if flag = -1 then
+	else
 		flag = IsNegative(n1) xor IsNegative(n2)
+		exponent = iff(exp1 > exp2, exp1, exp2)
 		size = (length(n1) - (exp1)) - (length(n2) - (exp2))
 		if size < 0 then
 			n1 = n1 & repeat(0, - (size))
@@ -994,7 +1000,30 @@ public function AddExp(sequence n1, integer exp1, sequence n2, integer exp2, Tar
 end function
 
 public function SubtractExp(sequence n1, integer exp1, sequence n2, integer exp2, TargetLength targetLength, AtomRadix radix)
-	return AddExp(n1, exp1, Negate(n2), exp2, targetLength, radix)
+	sequence numArray, ret
+	integer size, flag, exponent
+	if not length(n1) then
+		numArray = Negate(n2) -- returning n1
+		exponent = exp2
+		flag = NO_SUBTRACT_ADJUST
+	elsif not length(n2) then
+		numArray = n1
+		exponent = exp1
+		flag = NO_SUBTRACT_ADJUST
+	else
+		flag = IsNegative(n1) xor IsPositive(n2)
+		exponent = iff(exp1 > exp2, exp1, exp2)
+		size = (length(n1) - (exp1)) - (length(n2) - (exp2))
+		if size < 0 then
+			n1 = n1 & repeat(0, - (size))
+		elsif size > 0 then
+			n2 = n2 & repeat(0, size)
+		end if
+		numArray = Subtr(n1, n2)
+	end if
+	ret = AdjustRound(numArray, exponent, targetLength, radix, flag)
+	return ret
+	-- return AddExp(n1, exp1, Negate(n2), exp2, targetLength, radix)
 end function
 
 
@@ -1430,8 +1459,8 @@ public function EunMultiply(Eun n1, Eun n2)
 	return MultiplyExp(n1[1], n1[2], n2[1], n2[2], targetLength, n1[4])
 end function
 
-public function EunSquare(Eun n1)
-	return SquareExp(n1[1], n1[2], n1[3], n1[4])
+public function EunSquared(Eun n1)
+	return SquaredExp(n1[1], n1[2], n1[3], n1[4])
 end function
 
 -- EunAdd
