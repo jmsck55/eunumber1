@@ -965,6 +965,9 @@ public function AddExp(sequence n1, integer exp1, sequence n2, integer exp2, Tar
 	sequence ret
 	integer size, flag, exponent
 	if not length(n1) then
+		if not length(n2) then
+			return NewEun({}, 0, targetLength, radix)
+		end if
 		n1 = n2 -- returning n1
 		exponent = exp2
 		flag = NO_SUBTRACT_ADJUST
@@ -1003,6 +1006,9 @@ public function SubtractExp(sequence n1, integer exp1, sequence n2, integer exp2
 	sequence numArray, ret
 	integer size, flag, exponent
 	if not length(n1) then
+		if not length(n2) then
+			return NewEun({}, 0, targetLength, radix)
+		end if
 		numArray = Negate(n2) -- returning n1
 		exponent = exp2
 		flag = NO_SUBTRACT_ADJUST
